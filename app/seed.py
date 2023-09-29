@@ -36,10 +36,13 @@ with app.app_context():
 
  #seeding heropowers
     heropowers=[] #empty list to store the heropowers
+    strength_names=['Strong', 'Weak', 'Average']
+
+
     for i in range(10):
         hero=rc(heros)
         power=rc(powers)
-        b=HeroPowers(strength=fake.word(),hero=hero,power=power)
+        b=HeroPowers(strength = random.choice(strength_names),hero=hero,power=power)
         heropowers.append(b)
     
     db.session.add_all(heropowers)
