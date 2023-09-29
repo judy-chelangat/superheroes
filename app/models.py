@@ -26,8 +26,8 @@ class HeroPowers(db.Model):
     updated_at=db.Column(db.DateTime,onupdate=db.func.now())
 
 #defining the relationships
-    hero=db.relationship('Hero',backref='heropowers')
-    power=db.relationship('Power',backref='heropowers')
+    hero=db.relationship('Hero',backref='hero_powers')
+    power=db.relationship('Power',backref='hero_powers')
 
 
     def __repr__(self):
