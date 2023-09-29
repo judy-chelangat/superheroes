@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import validates
 
 db = SQLAlchemy()
 
@@ -29,7 +30,15 @@ class HeroPowers(db.Model):
     hero=db.relationship('Hero',backref='hero_powers')
     power=db.relationship('Power',backref='hero_powers')
 
+#validation for the strength
+    @validates('strength')
+    def validate_strength(self,key,strength):
+        valid_strengths = ['Strong', 'Weak', 'Average']
+        if strength not in valid_strengths:
+            raise ValueError(f"Strength must be one of: {', '.join(valid_strengths)}")
 
+        return strength
+    
     def __repr__(self):
         return f'<Heropowers {self.strength} >'
     
