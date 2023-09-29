@@ -23,15 +23,7 @@ with app.app_context():
     db.session.add_all(heros)
     db.session.commit()
     
- #seeding heropowers
-    heropowers=[] #empty list to store the heropowers
-    for i in range(10):
-        b=HeroPowers(strength=fake.word())
-        heropowers.append(b)
-    
-    db.session.add_all(heropowers)
-    db.session.commit()
-    
+
  #seeding powers
     powers=[] #empty list to store the powers
     for i in range(10):
@@ -42,4 +34,15 @@ with app.app_context():
     db.session.add_all(powers)
     db.session.commit()
 
+ #seeding heropowers
+    heropowers=[] #empty list to store the heropowers
+    for i in range(10):
+        hero=rc(heros)
+        power=rc(powers)
+        b=HeroPowers(strength=fake.word(),hero=hero,power=power)
+        heropowers.append(b)
+    
+    db.session.add_all(heropowers)
+    db.session.commit()
+    
     print('seeding completed ')
