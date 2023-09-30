@@ -57,10 +57,21 @@ class PowerResource(Resource):
       powers_list=[{'id':power.id,'name':power.name,'description':power.description} for power in powers]
 
       return make_response(jsonify(powers_list),200)
-   
+
+#power by id
+class PowerID(Resource):
+   def get(self,id):
+      power_one=Power.query.filter_by(id=id).first()
+
+      if power_one is None:
+         return make_response(jsonify({"error": "Power not found"}),404)
+      else:
+         power_details=[{'id':power_one.id,'name':power_one.name,'description':power_one.description}]
+         return make_response(jsonify(power_details),200)
 api.add_resource(HeroResource,'/heroes')
 api.add_resource(HeroID,'/heroes/<int:id>')
 api.add_resource(PowerResource,'/powers')
+api.add_resource(PowerID,'/powers/<int:id>')
 if __name__ == '__main__':
     app.run(port=5555)
     print(app.url_map)
