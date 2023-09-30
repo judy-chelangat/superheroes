@@ -29,10 +29,30 @@ class HeroResource(Resource):
 #resource for the heroes by id
 class HeroID(Resource):
    def get(self,id):
-      hero=Hero.query.filter_by(id=id).first()
-      if hero is None:
-         pass
+      hero_one=Hero.query.filter_by(id=id).first()
+      if hero_one is None:
+         return make_response(jsonify({ "error": "Hero not found"}),404)
+      else:
+          #getting the powers for that hero
+          powers=Power.query.filter_by(id=id).all()
+          power_details=[]
+
+          for power in powers:
+             power_info={
+                'id':power.id,
+                'name':power.name,
+                'description':power.description
+             }
+             power_details.append(power_info)
+             hero_details=[{'id': hero_one.id, 
+                         'name': hero_one.name, 
+                         'super_name':hero_one.super_name,
+                         'powers':power_details
+                         }]
+          return make_response(jsonify(hero_details), 200)
+
 api.add_resource(HeroResource,'/heroes')
+api.add_resource(HeroID,'/heroes/<int:id>')
 
 if __name__ == '__main__':
     app.run(port=5555)
