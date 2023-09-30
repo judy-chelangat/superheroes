@@ -46,11 +46,18 @@ class Power(db.Model):
     __tablename__='power'
     id = db.Column(db.Integer, primary_key=True)
     name=db.Column(db.String,nullable=False)
-    description=db.Column(db.String)
+    description=db.Column(db.String,nullable=False)
     created_at=db.Column(db.DateTime,server_default=db.func.now())
     updated_at=db.Column(db.DateTime,onupdate=db.func.now())
 
-   
+#validation for the description
+    @validates('description')
+    def validate_description(self,key,description):
+     if len(description) < 20:
+         raise ValueError('description must be greater than 20 characters')
+     return description
+    
+
     def __repr__(self):
         return f'<power {self.name} {self.description}>'
     
