@@ -12,13 +12,15 @@ class Hero(db.Model):
     created_at=db.Column(db.DateTime,server_default=db.func.now())
     updated_at=db.Column(db.DateTime,onupdate=db.func.now())
 
-# add any models you may need. 
+    hero_powers = db.relationship('HeroPowers', back_populates='hero')
+
    
     def __repr__(self):
         return f'<Hero {self.name} {self.super_name}>'
     
 class HeroPowers(db.Model):
-    __tablename='heropowers'
+    __tablename__='heropowers'
+
     id = db.Column(db.Integer, primary_key=True)
     strength=db.Column(db.String,nullable=False)
     hero_id=db.Column(db.Integer,db.ForeignKey('hero.id'))
@@ -27,9 +29,8 @@ class HeroPowers(db.Model):
     updated_at=db.Column(db.DateTime,onupdate=db.func.now())
 
 #defining the relationships
-    hero=db.relationship('Hero',backref='hero_powers')
-    power=db.relationship('Power',backref='hero_powers')
-
+    hero = db.relationship('Hero', back_populates='hero_powers')
+    power = db.relationship('Power', back_populates='hero_powers')
 #validation for the strength
     @validates('strength')
     def validate_strength(self,key,strength):
@@ -50,6 +51,8 @@ class Power(db.Model):
     created_at=db.Column(db.DateTime,server_default=db.func.now())
     updated_at=db.Column(db.DateTime,onupdate=db.func.now())
 
+    
+    hero_powers = db.relationship('HeroPowers', back_populates='power')
 #validation for the description
     @validates('description')
     def validate_description(self,key,description):
