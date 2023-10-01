@@ -79,15 +79,24 @@ class PowerID(Resource):
 #checking if the power exist 
       if power is None:
           return make_response(jsonify({"error": "Power not found"}), 404)
-       #updating the description
-      if 'description' in data:
-         power.description=data['description']
-
-      validation_errors = power.validate()
-      if validation_errors:
-            return make_response(jsonify({"errors": validation_errors}), 400)
       
-      db.session.commit()
+#validation for the len of description
+      if len(data["description"]) < 20:
+       return jsonify({
+        "errors": ["description must be at least 20 characters long"]
+    }), 400
+
+       #updating the description
+      try:
+        power.description = data["description"]
+        db.session.commit()
+
+      except Exception as e:
+    # If the power is not updated successfully, return error response
+         return jsonify({
+         "errors": ["validation errors"]
+      }), 400
+      
 
       new_response={
           'id':power.id,
