@@ -34,22 +34,23 @@ class HeroID(Resource):
          return make_response(jsonify({ "error": "Hero not found"}),404)
       else:
           #getting the powers for that hero
-          powers=Power.query.filter_by(id=id).all()
-          power_details=[]
+          hero_details = {
+              'id': hero_one.id,
+              'name': hero_one.name,
+              'super_name': hero_one.super_name,
+              'powers': []
+          }
 
-          for power in powers:
-             power_info={
-                'id':power.id,
-                'name':power.name,
-                'description':power.description
+          for hero_power in hero_one.hero_powers:
+             power_info = {
+                'id': hero_power.power.id,
+                'name': hero_power.power.name,
+                'description': hero_power.power.description
              }
-             power_details.append(power_info)
-             hero_details=[{'id': hero_one.id, 
-                         'name': hero_one.name, 
-                         'super_name':hero_one.super_name,
-                         'powers':power_details
-                         }]
+             hero_details['powers'].append(power_info)
+
           return make_response(jsonify(hero_details), 200)
+      
 #getting the powers
 class PowerResource(Resource):
    def get(self):
