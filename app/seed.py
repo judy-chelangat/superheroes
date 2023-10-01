@@ -25,14 +25,30 @@ with app.app_context():
     
 
  #seeding powers
-    powers=[] #empty list to store the powers
-    for i in range(10):
-        b=Power(name=fake.name(),
-                     description=fake.sentence())
-        powers.append(b)
-    
+    powers = []
+    power_data = [
+            ('Super Strength', 'This power grants immense physical strength.'),
+            ('Flight', 'The ability to soar through the skies at will.'),
+            ('Telekinesis', 'Move objects with the power of your mind.'),
+            ('Invisibility', 'Become invisible to the naked eye.'),
+            ('X-ray Vision', 'See through solid objects.'),
+            ('Fire Manipulation', 'Control and create fire at your will.'),
+            ('Ice Control', 'Command the power of ice and cold.'),
+            ('Time Travel', 'Travel through time and alter the past or future.'),
+            ('Teleportation', 'Instantly transport yourself to any location.'),
+            ('Mind Reading', 'Read the thoughts of others with ease.'),
+        ]
+
+    for name, description in power_data:
+            power = Power(
+                name=name,
+                description=description,
+            )
+            powers.append(power)
+
     db.session.add_all(powers)
     db.session.commit()
+
 
  #seeding heropowers
     heropowers=[] #empty list to store the heropowers
